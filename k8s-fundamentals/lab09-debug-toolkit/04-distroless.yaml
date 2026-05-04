@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: distroless
+spec:
+  containers:
+    - name: app
+      image: gcr.io/distroless/python3-debian12
+      command: ["python3", "-c", "import time; time.sleep(3600)"]

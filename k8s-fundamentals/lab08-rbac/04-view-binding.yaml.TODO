@@ -1,0 +1,2 @@
+# TODO — ServiceAccount "reviewer" + RoleBinding that references the
+# default ClusterRole "view" (kind: ClusterRole in roleRef, but RoleBinding scopes it to team-a).

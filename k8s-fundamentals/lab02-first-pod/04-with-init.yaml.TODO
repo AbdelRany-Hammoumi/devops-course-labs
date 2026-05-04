@@ -1,0 +1,3 @@
+# TODO — add an initContainers list with a "prepare" container that
+# writes /work/index.html into a shared emptyDir volume mounted at /work.
+# The main "web" container mounts the same volume at /usr/share/nginx/html.

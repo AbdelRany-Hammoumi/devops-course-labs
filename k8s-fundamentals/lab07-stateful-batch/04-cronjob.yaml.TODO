@@ -1,0 +1,6 @@
+# TODO — CronJob "heartbeat":
+#   schedule: */1 * * * *  (every minute — for the lab only!)
+#   timeZone: UTC
+#   concurrencyPolicy: Forbid
+#   successfulJobsHistoryLimit: 2, failedJobsHistoryLimit: 1
+#   jobTemplate runs busybox:1.37 echoing date + hostname

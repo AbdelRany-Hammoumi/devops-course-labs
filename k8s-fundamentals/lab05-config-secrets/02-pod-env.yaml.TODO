@@ -1,0 +1,3 @@
+# TODO — Pod "env-demo" with two env vars sourced from app-config:
+#   LOG_LEVEL ← configMapKeyRef LOG_LEVEL
+#   CUSTOM_GREETING ← configMapKeyRef GREETING

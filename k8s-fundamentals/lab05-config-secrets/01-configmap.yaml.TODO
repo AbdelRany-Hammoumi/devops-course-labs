@@ -1,0 +1,2 @@
+# TODO — author the ConfigMap with three keys: LOG_LEVEL, GREETING, index.html
+# Use multi-line `|` for index.html (it's a small HTML doc — see README).

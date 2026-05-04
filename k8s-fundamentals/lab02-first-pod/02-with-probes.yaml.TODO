@@ -1,0 +1,2 @@
+# TODO — extend 01 with readinessProbe + livenessProbe + startupProbe.
+# All three use httpGet { path: /, port: 80 }.

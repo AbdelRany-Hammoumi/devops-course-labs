@@ -1,0 +1,4 @@
+# TODO — add a second initContainer "log-tail" with restartPolicy: Always
+# (this makes it a native sidecar — K8s 1.29+).
+# Its command emits a heartbeat line every 5s.
+# Verify with `kubectl get pod hello` showing 2/2 READY.

@@ -1,0 +1,6 @@
+# TODO — author the headless Service "web" + StatefulSet "web" with:
+#   replicas: 3
+#   serviceName: web (must match the Service name)
+#   volumeClaimTemplates: data, 256Mi, RWO, storageClassName=standard
+#   container nginx:1.27-alpine on port 80
+#   lifecycle.postStart: write index.html with $HOSTNAME

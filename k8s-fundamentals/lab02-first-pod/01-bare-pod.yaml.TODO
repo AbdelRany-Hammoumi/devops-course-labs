@@ -1,0 +1,4 @@
+# TODO — author the bare Pod manifest from the README's Step 1.
+# Required: apiVersion, kind, metadata.name, metadata.labels, spec.containers (one entry: name, image, ports.containerPort)
+# Image: nginx:1.27-alpine
+# When done, rename to 01-bare-pod.yaml and `kubectl apply -f` it.

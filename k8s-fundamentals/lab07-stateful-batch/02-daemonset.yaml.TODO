@@ -1,0 +1,4 @@
+# TODO — DaemonSet "node-info" with:
+#   tolerations: [{operator: Exists}]   ← run on control-plane too
+#   container busybox:1.37, command echoes hostname + NODE_NAME every 30s
+#   env NODE_NAME ← fieldRef spec.nodeName

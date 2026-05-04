@@ -1,0 +1,3 @@
+# TODO — Pod "reader" mounting the same "data" PVC at /data.
+# Container: busybox:1.37
+# Command: cat /data/log.txt && sleep 3600

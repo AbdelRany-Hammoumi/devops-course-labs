@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: broken-probe
+spec:
+  containers:
+    - name: web
+      image: nginx:1.27-alpine
+      ports:
+        - containerPort: 80
+      livenessProbe:
+        httpGet:
+          path: /non-existent      # ← intentional bug: nginx 404s, kubelet kills
+          port: 80
+        periodSeconds: 5
+        failureThreshold: 1
+        initialDelaySeconds: 5

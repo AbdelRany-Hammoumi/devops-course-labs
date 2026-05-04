@@ -1,0 +1,3 @@
+# TODO — ResourceQuota "team-a-quota" + LimitRange "team-a-defaults" in namespace team-a.
+# Quota: requests.cpu=2 / memory=2Gi ; limits=4 / 4Gi ; pods=10, services=5, pvcs=3.
+# LimitRange Container: default=200m/256Mi ; defaultRequest=50m/64Mi ; max=1/1Gi.

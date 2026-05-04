@@ -1,0 +1,3 @@
+# TODO — extend 02 with resources.requests + resources.limits.
+# Suggested: requests cpu=50m memory=64Mi ; limits cpu=200m memory=128Mi.
+# After apply, check `.status.qosClass` — should be Burstable.

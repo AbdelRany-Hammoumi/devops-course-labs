@@ -1,0 +1,4 @@
+# TODO — author the PVC named "data".
+#   accessModes: [ReadWriteOnce]
+#   storageClassName: standard
+#   resources.requests.storage: 1Gi

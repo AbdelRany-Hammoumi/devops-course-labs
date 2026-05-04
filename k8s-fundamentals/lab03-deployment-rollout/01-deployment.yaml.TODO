@@ -1,0 +1,15 @@
+# TODO — author the Deployment manifest from the README's Step 1.
+# Required:
+#   apiVersion: apps/v1
+#   kind: Deployment
+#   metadata.name = web
+#   spec.replicas = 3
+#   spec.selector.matchLabels = { app: web }
+#   spec.strategy.type = RollingUpdate, with maxSurge=1, maxUnavailable=0
+#   spec.template.metadata.labels = { app: web }
+#   spec.template.spec.containers[0]:
+#     name=web, image=nginx:1.27-alpine, port 80
+#     resources requests/limits
+#     readinessProbe + livenessProbe on httpGet /
+#
+# When done, rename to 01-deployment.yaml and `kubectl apply -f` it.

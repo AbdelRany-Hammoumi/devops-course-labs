@@ -1,0 +1,3 @@
+# TODO — Pod "volume-demo" mounting app-config's index.html key
+# at /usr/share/nginx/html/index.html.
+# Use spec.volumes[].configMap.items[] to select only that key.

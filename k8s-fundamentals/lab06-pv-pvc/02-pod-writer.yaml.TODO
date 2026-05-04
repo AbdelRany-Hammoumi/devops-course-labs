@@ -1,0 +1,3 @@
+# TODO — Pod "writer" mounting the "data" PVC at /data.
+# Container: busybox:1.37
+# Command: append two lines to /data/log.txt then `tail -f` it (so the Pod stays Running).

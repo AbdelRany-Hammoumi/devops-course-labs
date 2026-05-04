@@ -1,0 +1,4 @@
+# TODO — Job "pi-calc":
+#   parallelism: 2, completions: 4, backoffLimit: 3
+#   restartPolicy: Never
+#   container perl:5.40-slim running `perl -Mbignum=bpi -wle "print bpi(200)"`

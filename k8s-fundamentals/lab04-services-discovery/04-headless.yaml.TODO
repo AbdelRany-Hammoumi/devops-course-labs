@@ -1,0 +1,3 @@
+# TODO — author the Headless Service.
+# Same selector; spec.clusterIP: None.
+# Different metadata.name from 02 and 03 (e.g. web-headless).

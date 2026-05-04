@@ -1,0 +1,20 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Build / runtime artifacts
+node_modules/
+dist/
+*.log
+
+# Environment + credentials
+.env
+.env.*
+*.pem
+*.key
+*credentials*
+
+# Lab-local working state (students may iterate here)
+lab-output/

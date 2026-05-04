@@ -1,0 +1,6 @@
+# TODO — Application "guestbook" in namespace argocd:
+#   project: default
+#   source: github.com/argoproj/argocd-example-apps, path=guestbook, targetRevision=HEAD
+#   destination: https://kubernetes.default.svc, namespace=guestbook
+#   syncPolicy.syncOptions: [CreateNamespace=true]
+# (No automated block yet — manual sync.)

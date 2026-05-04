@@ -1,0 +1,5 @@
+# TODO — author IPAddressPool "lab-pool" + L2Advertisement "lab-l2".
+# Pool addresses: 172.18.255.200-172.18.255.250 (kind docker subnet — verify with
+#   docker network inspect kind -f '{{ (index .IPAM.Config 0).Subnet }}')
+# L2Advertisement references the pool by name.
+# Both in namespace metallb-system.

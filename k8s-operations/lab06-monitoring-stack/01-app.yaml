@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+        - name: sample
+          image: prom/prometheus:v3.0.1
+          args:
+            - --config.file=/etc/prometheus/prometheus.yml
+            - --web.listen-address=:9090
+          ports:
+            - containerPort: 9090
+              name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample
+  labels:
+    app: sample
+spec:
+  selector:
+    app: sample
+  ports:
+    - port: 9090
+      targetPort: metrics
+      name: metrics

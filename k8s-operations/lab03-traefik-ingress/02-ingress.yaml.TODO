@@ -1,0 +1,5 @@
+# TODO — author the standard Ingress "shop" with two host rules:
+#   - api.localtest.me  → service api:80
+#   - web.localtest.me  → service web:80
+# ingressClassName: traefik
+# annotation traefik.ingress.kubernetes.io/router.entrypoints: web

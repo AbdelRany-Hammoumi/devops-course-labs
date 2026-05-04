@@ -1,0 +1,7 @@
+# TODO — PrometheusRule "sample-alerts":
+#   labels.release: monitoring
+#   one alert "SampleAlwaysFiring":
+#     expr: vector(1)
+#     for: 30s
+#     labels: severity=warning, team=lab
+#     annotations: summary, runbook_url

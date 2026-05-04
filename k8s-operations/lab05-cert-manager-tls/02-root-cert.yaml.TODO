@@ -1,0 +1,4 @@
+# TODO — Certificate "root-ca" in cert-manager namespace:
+#   isCA: true, commonName: lab-root-ca, secretName: root-ca-secret
+#   duration: 8760h, ECDSA-256 key
+#   issuerRef: selfsigned ClusterIssuer

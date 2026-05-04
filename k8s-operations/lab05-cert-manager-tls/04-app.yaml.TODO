@@ -1,0 +1,3 @@
+# TODO — Deployment "app" + Service "app" + IngressRoute "app".
+# Use hashicorp/http-echo:1.0 with -text="hello over TLS".
+# IngressRoute on entryPoint websecure, Host(`app.localtest.me`), tls.secretName: app-tls.

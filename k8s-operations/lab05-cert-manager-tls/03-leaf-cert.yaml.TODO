@@ -1,0 +1,5 @@
+# TODO — Certificate "app-tls" in default namespace:
+#   secretName: app-tls
+#   issuerRef: lab-ca ClusterIssuer
+#   commonName + dnsNames: app.localtest.me
+#   duration: 720h, renewBefore: 240h

@@ -1,0 +1,3 @@
+# TODO — author two ClusterIssuers:
+#   1. "selfsigned" (spec.selfSigned: {}) — used to mint the root CA in step 4
+#   2. "lab-ca" (spec.ca.secretName: root-ca-secret) — uses the root cert from step 4

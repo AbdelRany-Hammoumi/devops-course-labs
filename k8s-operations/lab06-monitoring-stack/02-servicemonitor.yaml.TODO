@@ -1,0 +1,4 @@
+# TODO — ServiceMonitor "sample":
+#   labels.release: monitoring  (matches the chart's selector)
+#   selector.matchLabels.app: sample
+#   endpoints[0]: port=metrics, path=/metrics, interval=15s

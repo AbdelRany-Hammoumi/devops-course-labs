@@ -1,0 +1,8 @@
+# TODO — Postgres Cluster CR (CloudNativePG):
+#   apiVersion: postgresql.cnpg.io/v1, kind: Cluster, name: pg
+#   instances: 3
+#   imageName: ghcr.io/cloudnative-pg/postgresql:17.2
+#   storage: { size: 1Gi, storageClass: standard }
+#   postgresql.parameters: max_connections=100, shared_buffers=128MB
+#   bootstrap.initdb: { database: app, owner: app }
+#   resources: requests 100m/256Mi ; limits 500m/512Mi

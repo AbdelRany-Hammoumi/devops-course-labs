@@ -1,0 +1,7 @@
+# TODO — author Chart.yaml with:
+#   apiVersion: v2
+#   name: mychart
+#   description: A minimal app chart
+#   type: application
+#   version: 0.1.0
+#   appVersion: "1.0.0"

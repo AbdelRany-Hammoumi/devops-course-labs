@@ -1,0 +1,5 @@
+# TODO — author IngressRoute "api-richroute" (Traefik CRD)
+# Two routes on Host(`api.localtest.me`):
+#   - PathPrefix(`/v1`)  →  api:80
+#   - catch-all          →  api:80
+# After step 5: add `middlewares: [{name: rate-limit-low}]` to the catch-all.

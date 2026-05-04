@@ -1,0 +1,4 @@
+# TODO — Deployment "noisy" (1 replica, busybox:1.37) emitting JSON log lines:
+#   - every 1 second
+#   - mix of level=info / warn / error (every 3rd / 7th cycle)
+# Each line is a single JSON object with level + msg + iteration counter.

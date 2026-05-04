@@ -1,0 +1,13 @@
+# TODO — write the Dockerfile for the Flask app in app/
+#
+# The README walks you through it step by step.
+# When done, rename this file to "Dockerfile" (no extension).
+#
+# Required structure:
+#   FROM       — pin a Python 3.12 alpine base
+#   WORKDIR    — /app
+#   COPY       — requirements.txt first, then the rest
+#   RUN        — pip install
+#   EXPOSE     — 8080
+#   USER       — non-root (UID >= 1000)
+#   CMD        — run main.py with python (use exec form)

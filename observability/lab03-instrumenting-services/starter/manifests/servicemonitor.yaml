@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: orders
+  labels:
+    app: orders
+    # TODO: add the label that the Prometheus Operator uses to discover ServiceMonitors.
+    # Hint: check kube-prometheus-stack's defaults. Without this label, Prometheus will
+    # silently ignore your ServiceMonitor and never scrape /metrics.
+spec:
+  selector:
+    matchLabels:
+      app: orders
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s

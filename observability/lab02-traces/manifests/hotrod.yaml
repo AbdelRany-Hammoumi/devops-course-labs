@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hotrod
+  namespace: observability
+  labels:
+    app: hotrod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hotrod
+  template:
+    metadata:
+      labels:
+        app: hotrod
+    spec:
+      containers:
+        - name: hotrod
+          image: jaegertracing/example-hotrod:1.65
+          args:
+            - all
+            - --otel-exporter=otlp
+            - --otel-exporter-endpoint=tempo.observability:4317
+            - --otel-exporter-insecure=true
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: hotrod
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "namespace=observability,deployment.environment=lab"
+          ports:
+            - { name: frontend,  containerPort: 8080 }
+            - { name: customer,  containerPort: 8081 }
+            - { name: driver,    containerPort: 8082 }
+            - { name: route,     containerPort: 8083 }
+          resources:
+            requests: { cpu: "50m",  memory: "128Mi" }
+            limits:   { cpu: "500m", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hotrod
+  namespace: observability
+spec:
+  selector:
+    app: hotrod
+  ports:
+    - { name: frontend, port: 8080, targetPort: frontend }

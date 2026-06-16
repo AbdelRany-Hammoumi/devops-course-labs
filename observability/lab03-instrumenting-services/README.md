@@ -125,19 +125,27 @@ done | sort | uniq -c
 In the Prometheus UI, query:
 
 ```text
-sum by (status) (rate(http_requests_total{app="orders"}[1m]))
-histogram_quantile(0.99, sum by (le,route) (rate(http_request_duration_seconds_bucket{app="orders"}[5m])))
+sum by (status) (rate(http_requests_total{namespace="orders"}[1m]))
+histogram_quantile(0.99, sum by (le,route) (rate(http_request_duration_seconds_bucket{namespace="orders"}[5m])))
 ```
 
 You should see counters incrementing in real time.
+
+> **Why `namespace="orders"` and not `app="orders"`?** Your app emits only the labels you
+> coded (`method`, `route`, `status`) — it does **not** emit an `app` label. When Prometheus
+> scrapes via a ServiceMonitor it adds *target* labels like `namespace`, `service`, `pod`,
+> `job` — but **not** the Service's selector labels (those need `spec.targetLabels` on the
+> ServiceMonitor). `namespace` is always present, so filtering on `namespace="orders"` works
+> out of the box. (Bonus: add `targetLabels: [app]` to your ServiceMonitor and `app="orders"`
+> starts working too.)
 
 ### Step 7 — Build a Grafana dashboard as ConfigMap (5 min)
 
 In the Grafana UI (lab06 port-forward), build a simple dashboard with three panels:
 
-- **R** — `sum by (route) (rate(http_requests_total{app="orders"}[5m]))`
-- **E** — `sum by (route) (rate(http_requests_total{app="orders", status=~"5.."}[5m])) / sum by (route) (rate(http_requests_total{app="orders"}[5m]))`
-- **D** — `histogram_quantile(0.99, sum by (le,route) (rate(http_request_duration_seconds_bucket{app="orders"}[5m])))`
+- **R** — `sum by (route) (rate(http_requests_total{namespace="orders"}[5m]))`
+- **E** — `sum by (route) (rate(http_requests_total{namespace="orders", status=~"5.."}[5m])) / sum by (route) (rate(http_requests_total{namespace="orders"}[5m]))`
+- **D** — `histogram_quantile(0.99, sum by (le,route) (rate(http_request_duration_seconds_bucket{namespace="orders"}[5m])))`
 
 Then **export** the dashboard JSON: `Share` → `Export` → `Save to file`.
 
@@ -171,9 +179,9 @@ spec:
       rules:
         - alert: OrdersHighErrorRate
           expr: |
-            sum(rate(http_requests_total{app="orders", status=~"5.."}[5m]))
+            sum(rate(http_requests_total{namespace="orders", status=~"5.."}[5m]))
               /
-            sum(rate(http_requests_total{app="orders"}[5m])) > 0.03
+            sum(rate(http_requests_total{namespace="orders"}[5m])) > 0.03
           for: 2m
           labels: { severity: critical }
           annotations:

@@ -1,122 +1,157 @@
 # Challenge — Build Your Observability Stack (Full-Day Hands-On)
 
-> **Format**: teams of 2-3. You are the SRE team for the day. By 17:00 your team
-> demos a working observability stack to the room. Everything you need is in the
+> **Format**: pairs (teams of 2). If the headcount is odd, one team of 3.
+> You are a dev + platform duo: by the end of the day your app runs on a cluster
+> that watches it, and you demo the whole thing live. Everything you need is in the
 > lab READMEs linked below — work through them at your own pace.
 
 ---
 
 ## The mission
 
-A fictional company runs a Kubernetes cluster and is flying blind: no dashboards,
-no alerts, no way to debug an incident. **Your team's job: give them eyes.**
+A fictional company is about to ship a service to Kubernetes and is flying blind:
+no metrics, no dashboards, no alerts. **Your duo's job: ship the app AND the eyes that watch it.**
+
+You split the work into two roles:
+
+| Role | Owner | What they build | Primary lab |
+|------|-------|-----------------|-------------|
+| 🛠️ **The App** | one person | An instrumented service: RED metrics, structured JSON logs, exposed `/metrics` | [`observability/lab03-instrumenting-services`](./lab03-instrumenting-services/README.md) |
+| 📡 **The Stack** | the other person | The observability platform on kind: Prometheus + Grafana + Alertmanager, scraping + dashboards + alerts | [`k8s-operations/lab06-monitoring-stack`](../k8s-operations/lab06-monitoring-stack/README.md) |
+
+The point of the day: **make them meet.** The Stack must scrape The App, dashboard
+its metrics, and alert on its errors. That handoff — dev ships a service, platform
+makes it observable — is exactly what happens on a real team.
+
+> **Team of 3?** The third person owns a **specialization track** (logs or traces, see
+> Part 3) and starts it as soon as the App is on the Stack — or pair-programs with
+> whoever is behind.
 
 By the end of the day you will have:
 
-1. A running metrics stack (Prometheus + Grafana + Alertmanager).
-2. A custom dashboard and a working alert.
-3. **One** deeper capability of your choice (logs, traces, or app instrumentation).
-4. A 5-7 minute demo showing it all live.
+1. An instrumented app running on a cluster.
+2. A metrics stack scraping it, with a custom dashboard and a firing alert **on your app**.
+3. (If time / trio) one deeper pillar — logs or traces.
+4. A 5-7 minute demo where **both** of you present your half and the handoff between them.
 
 You work **autonomously** from the lab READMEs. The instructor circulates to unblock
 you — raise your hand at each checkpoint, or whenever you're stuck for more than 10 minutes.
 
 ---
 
-## Teams & ground rules
+## Ground rules
 
-- **Teams of 2-3.** Pair-driving encouraged: one types, one reads the README, swap often.
-- **One cluster per team is enough** — work on whichever machine has a healthy kind cluster.
-- **Stuck > 10 min?** Check the README's Validation section first, then ask a neighbour, then raise your hand.
+- **Split, don't silo.** You own a half each, but check in often — your halves must connect.
+  When one of you is blocked, pair up until it's unblocked.
+- **One cluster per duo.** The Stack person owns it; the App person deploys onto it at integration time.
+- **Stuck > 10 min?** Check the README's Validation section first, then ask your partner, then raise your hand.
 - **Done early?** There's always more — see [Going Further](#going-further). Nobody sits idle.
 
 ---
 
-## Part 1 — Core mission (everyone) · ~2h15
+## Part 1 — Build in parallel · ~2h15
 
-Stand up the canonical Kubernetes metrics stack and prove it works end-to-end.
+Both roles work at the same time. You don't block each other — sync at Checkpoint 1.
 
-**Lab**: [`k8s-operations/lab06-monitoring-stack`](../k8s-operations/lab06-monitoring-stack/README.md)
+### 🛠️ The App — `lab03-instrumenting-services`
+1. Read the Flask starter and its five `# TODO` markers.
+2. Add the **Counter** + **Histogram** (RED metrics), expose **`/metrics`**.
+3. Switch the logs to **structured JSON** with a `request_id`.
+4. Build the image and `kind load` it.
+> You can write and build all of this **before** the cluster is ready — you only need
+> the Stack at deploy time. Don't wait on your partner to start.
 
-What you'll do:
+### 📡 The Stack — `lab06-monitoring-stack`
 1. Install `kube-prometheus-stack` via Helm.
 2. Reach the Grafana, Prometheus and Alertmanager UIs.
-3. Deploy a sample app, author a **ServiceMonitor**, verify the target appears in Prometheus.
-4. Write a few **PromQL** queries against the scraped metrics.
-5. Build a **custom Grafana dashboard** (at least: a Rate panel, an Errors panel, a Duration/p99 panel).
-6. Define a **PrometheusRule** alert and watch it transition `Pending → Firing`.
+3. Use the lab's **sample app** to verify scraping works end-to-end: ServiceMonitor → target **UP** → PromQL returns data.
+4. Build a first **custom dashboard** (Rate / Errors / Duration) against the sample app.
+> Getting the sample app scraped proves your half works **before** your partner's app
+> arrives. You'll point the same machinery at the real app in Part 2.
 
-### ✅ Checkpoint 1 — "Grafana is up"
-Raise your hand when: Grafana opens, and Prometheus → Status → Targets shows your
-sample app's ServiceMonitor as **UP**. (Recall: the `release: monitoring` label is
-what makes the operator discover your ServiceMonitor.)
-
-### ✅ Checkpoint 2 — "Alert fired"
-Raise your hand when: your custom dashboard shows live data **and** your alert is
-**Firing** in the Prometheus Alerts tab. This is the minimum bar for the demo.
+### ✅ Checkpoint 1 — "Stack is up, App is built"
+Raise your hand when: **Stack** has Grafana open + a sample target **UP** in Prometheus,
+**and** App has the instrumented image built and `kind load`ed. (Recall: the
+`release: monitoring` label is what makes the operator discover a ServiceMonitor.)
 
 ---
 
-## Part 2 — Specialization track (pick ONE) · ~1h30
+## Part 2 — Integration: make them meet · ~1h
 
-Each team picks **one** track. Different teams pick different tracks → the demos at
-the end of the day cover the whole observability story, not the same lab eight times.
+This is the heart of the day. Do it **together.**
+
+1. **Deploy** the App onto the Stack's cluster (`kubectl apply` the App's manifests).
+2. **Discover it** — the App's Service + ServiceMonitor (with the `release: monitoring` label)
+   must show the App's target **UP** in Prometheus → Status → Targets.
+3. **Dashboard it** — the Stack person builds (or retargets) a dashboard showing the App's
+   own RED metrics: request rate, error ratio, p99 latency.
+4. **Alert on it** — a PrometheusRule that fires on the App's error rate. Generate some
+   traffic / errors against the App and watch it go `Pending → Firing`.
+
+### ✅ Checkpoint 2 — "The App is observed"
+Raise your hand when: your **own app's** metrics are live in a Grafana dashboard **and**
+an alert is **Firing** on your app's error rate. This is the minimum bar for the demo.
+
+---
+
+## Part 3 — Add a pillar (trio's job, or together if time) · ~45-60 min
+
+Add **one** deeper capability. For a trio, this is the third person's track from the start.
 
 | Track | Lab | You'll be able to… |
 |-------|-----|--------------------|
-| 🪵 **Logs** | [`k8s-operations/lab07-loki-logs`](../k8s-operations/lab07-loki-logs/README.md) | Centralize logs with Loki, query LogQL from Grafana, jump from a metric spike to the log lines that caused it |
+| 🪵 **Logs** | [`k8s-operations/lab07-loki-logs`](../k8s-operations/lab07-loki-logs/README.md) | Centralize logs with Loki, query LogQL from Grafana, jump from a metric spike to the App's log lines that caused it |
 | 🔍 **Traces** | [`observability/lab02-traces`](./lab02-traces/README.md) | Install Grafana Tempo, deploy an OTel-instrumented app, read a distributed trace tree, run TraceQL |
-| 🛠️ **Instrumentation** | [`observability/lab03-instrumenting-services`](./lab03-instrumenting-services/README.md) | Instrument a Flask app from scratch — RED metrics, structured JSON logs, ship a dashboard + alert as code |
 
-> **How to choose**: Logs is the gentlest (least new infra). Traces is the most
-> visual (the trace tree wows in a demo). Instrumentation is the most hands-on-code
-> (best if your team likes writing Python).
+> **How to choose**: Logs pairs most naturally with your instrumented app (you already
+> emit structured JSON — now centralize it). Traces is the most visual for the demo.
 
-### ✅ Checkpoint 3 — "Bonus working"
+### ✅ Checkpoint 3 — "Third pillar working"
 Raise your hand when your chosen track hits its README's main Validation step
-(logs queryable in Grafana / a trace tree visible in Tempo / your Flask app's
-metrics scraped and its alert firing).
+(your App's logs queryable in Grafana, or a trace tree visible in Tempo).
 
 ---
 
-## Part 3 — Demos · last ~75 min
+## Part 4 — Demo · last ~75 min
 
-Each team presents its stack live. **5-7 minutes per team.** No slides — drive the
-live UIs. Then 2-3 minutes of questions from the room.
+Each duo presents live. **5-7 minutes**, then 2-3 minutes of questions from the room.
+No slides — drive the live UIs. **Both of you speak**: App owner presents the app half,
+Stack owner presents the platform half, and together you show the handoff.
 
 ### What to show
-1. **The stack** — what's running (`kubectl get pods -n monitoring`).
-2. **A dashboard** — walk one panel, explain the PromQL behind it.
-3. **An alert firing** — show it in Prometheus/Alertmanager, explain the rule.
-4. **Your specialization** — the one thing your track unlocked (a LogQL query, a
-   trace tree, your instrumented endpoint).
-5. **One thing that broke** — what went wrong and how you fixed it. (This is often
-   the most useful 60 seconds of the demo.)
+1. **The App** (App owner) — the instrumented endpoint, the metrics it exposes, the structured logs.
+2. **The Stack** (Stack owner) — what's running (`kubectl get pods -n monitoring`), the Targets page proving your app is scraped.
+3. **The dashboard** — walk one panel, explain the PromQL behind it.
+4. **An alert firing** — on your app, show it in Prometheus/Alertmanager, explain the rule.
+5. **(If done) the third pillar** — a LogQL query on your app's logs, or a trace tree.
+6. **One thing that broke** — what went wrong at the handoff and how you fixed it.
+   (This is often the most useful 60 seconds of the demo.)
 
 ### Demo rubric (how you're assessed)
 
 | Criterion | What "good" looks like |
 |-----------|------------------------|
-| **Working stack** | Pods running, UIs reachable, no hand-waving |
-| **Understanding** | You can explain *why*, not just *what* — what does this PromQL actually compute? |
-| **Alerting** | An alert that fires for a real condition, with a sensible threshold |
-| **Specialization depth** | Your chosen track is genuinely working, not half-done |
+| **It works** | App running, scraped by the Stack, UIs reachable, no hand-waving |
+| **The handoff** | You can explain how the Stack discovers and scrapes the App (the ServiceMonitor + label) |
+| **Understanding** | Each owner explains *why*, not just *what* — what does this PromQL compute? why this metric type? |
+| **Alerting** | An alert that fires on the App for a real condition, with a sensible threshold |
+| **Teamwork** | Both speak, each owns their half, neither is a passenger |
 | **Communication** | Clear, honest (including what broke), within time |
 
 ---
 
 ## Going Further
 
-Finished the core mission and your track with time to spare? Pick from:
+Finished integration with time to spare? Pick from:
 
-- **Second track** — do another specialization lab from Part 2.
-- **Each lab's own "Going Further" section** — every lab README ends with stretch goals
-  (long-term storage with Thanos, tail-sampling for traces, custom business metrics, …).
-- **Three-pillar correlation** — if your team did metrics + logs + traces, wire the
-  `trace_id` so you can click from a metric exemplar → a trace → its log lines. This is
-  the holy grail demo.
-- **Break each other's stacks** — swap clusters with another team, introduce a failure
-  (scale a Deployment to 0, push a bad image), and see whose alerts catch it first.
+- **Add the other pillar** — do both logs and traces.
+- **Three-pillar correlation** — wire the `trace_id` so you can click from a metric exemplar
+  → a trace → its log lines, all for your own app. This is the holy-grail demo.
+- **A real business metric** — add an app-specific counter (e.g. `orders_placed_total`) and
+  dashboard it alongside the RED metrics.
+- **Each lab's own "Going Further" section** — Thanos long-term storage, tail-sampling, …
+- **Break each other's stacks** — swap clusters with another duo, introduce a failure
+  (scale the App to 0, push a bad image), and see whose alerts catch it first.
 
 ---
 
@@ -130,6 +165,10 @@ kubectl get pods -A | grep -v Running | grep -v Completed   # should be ~empty
 # The monitoring stack
 kubectl get pods -n monitoring
 
+# Load the App's image into kind (App owner, at integration time)
+docker build -t <app>:dev .
+kind load docker-image <app>:dev
+
 # Reach the UIs (one per terminal, or background with &)
 kubectl port-forward -n monitoring svc/monitoring-grafana 3000:80
 kubectl port-forward -n monitoring svc/monitoring-kube-prometheus-prometheus 9090:9090
@@ -138,5 +177,5 @@ kubectl port-forward -n monitoring svc/monitoring-kube-prometheus-alertmanager 9
 
 Grafana login: `admin` / `admin` (lab default).
 
-Stuck on Helm or Ingress concepts? They're in the `k8s-operations` chapter labs you've
-already touched — the monitoring lab assumes only that the cluster is up.
+The #1 integration gotcha: a ServiceMonitor without the `release: monitoring` label is
+silently ignored by the operator — your app's target never appears. Check that first.

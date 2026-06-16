@@ -135,6 +135,7 @@ Stack owner presents the platform half, and together you show the handoff.
 | **The handoff** | You can explain how the Stack discovers and scrapes the App (the ServiceMonitor + label) |
 | **Understanding** | Each owner explains *why*, not just *what* — what does this PromQL compute? why this metric type? |
 | **Alerting** | An alert that fires on the App for a real condition, with a sensible threshold |
+| **Third pillar** | Logs or traces working on your own app — a LogQL query on your logs, or a trace tree in Tempo |
 | **Teamwork** | Both speak, each owns their half, neither is a passenger |
 | **Communication** | Clear, honest (including what broke), within time |
 

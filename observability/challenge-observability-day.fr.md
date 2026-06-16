@@ -147,6 +147,7 @@ montrez la passation.
 | **La passation** | Vous savez expliquer comment La Stack découvre et scrape L'App (le ServiceMonitor + le label) |
 | **Compréhension** | Chaque responsable explique le *pourquoi*, pas juste le *quoi* — que calcule ce PromQL ? pourquoi ce type de métrique ? |
 | **Alerting** | Une alerte qui se déclenche sur L'App pour une vraie condition, avec un seuil sensé |
+| **3ᵉ pilier** | Logs ou traces fonctionnels sur votre propre app — une requête LogQL sur vos logs, ou un arbre de trace dans Tempo |
 | **Travail d'équipe** | Les deux parlent, chacun possède sa moitié, personne n'est passager |
 | **Communication** | Clair, honnête (y compris ce qui a cassé), dans le temps imparti |
 

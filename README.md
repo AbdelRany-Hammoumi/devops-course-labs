@@ -1,6 +1,6 @@
 # DevOps Course — Labs
 
-Hands-on labs for the DevOps course covering **Docker**, **Kubernetes Fundamentals**, **Kubernetes Operations**, and **Serverless (OpenFaaS)**.
+Hands-on labs for the DevOps course covering **Docker**, **Kubernetes Fundamentals**, **Kubernetes Operations**, **Serverless (OpenFaaS)**, and **Observability**.
 
 Each lab is a short, self-contained exercise: a `README.md` with objectives, step-by-step instructions, validation, and a "Going further" section. Minimal starter files (`# TODO` markers) accompany the README where relevant.
 
@@ -18,10 +18,15 @@ docker/                  P1 — Docker fundamentals
 k8s-fundamentals/        P2 — Kubernetes fundamentals
 k8s-operations/          P3 — Kubernetes platform & operations
 serverless-openfaas/     P4 — Serverless with OpenFaaS
+observability/           P5 — Observability (metrics, logs, traces)
 setup/                   shared cluster setup (kind config, setup checks)
 ```
 
 Each pillar holds `labNN-<slug>/` directories. Lab numbers track the chapter that introduces the concept.
+
+The `observability/` pillar also ships a full-day team challenge handout —
+`challenge-observability-day.md` (and `.fr.md`) — that chains the monitoring, logs, and
+tracing labs into a paired dev-and-platform exercise with a final demo.
 
 ## Prerequisites
 
